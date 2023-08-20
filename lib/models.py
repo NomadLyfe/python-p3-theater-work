@@ -31,7 +31,7 @@ class Audition(Base):
             session.query(Audition).filter(Audition.id == self.id).update({Audition.hired: 'True'})
             session.commit()
         else:
-            print(f'{self.actor} was already hired to play as {self.role.character_name}.')
+            return f'{self.actor} was already hired to play as {self.role.character_name}.'
     
 class Role(Base):
     __tablename__ = 'roles'
@@ -51,3 +51,15 @@ class Role(Base):
     @property
     def locations(self):
         return [audition.location for audition in self.auditions]
+    
+    def lead(self):
+        if self.actors:
+            return self.actors[0]
+        else:
+            return 'No actor has been hired for this role.'
+        
+    def understudy(self):
+        if self.actors:
+            return self.actors[1]
+        else:
+            return 'No actor has been hired for understudy for this role.'
